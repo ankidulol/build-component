@@ -20,5 +20,5 @@ Create component by typing
 
 `-s` Creates seperate styles file
 
-#License
+# License
 MIT
