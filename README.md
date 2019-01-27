@@ -1,4 +1,4 @@
-##build-component
+## build-component
 
 Simple command-line tool for creating [React Native](https://facebook.github.io/react-native/) component boilerplates
 
@@ -8,13 +8,13 @@ Simple command-line tool for creating [React Native](https://facebook.github.io/
 
 `$ npm install -g build-component`
 
-#Usage
+# Usage
 
 Create component by typing
 
 `$ build-component -n YourComponentName`
 
-##Flags
+## Flags
 
 `-f` Creates functional component instead
 
