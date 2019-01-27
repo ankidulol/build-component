@@ -6,12 +6,6 @@ Simple command-line tool for creating [React Native](https://facebook.github.io/
 
 ## Installation
 
-install locally
-
-`$ npm install build-component --save-dev`
-
-If you want to access build-component across your system, recommend installing the package globally
-
 `$ npm install -g build-component`
 
 #Usage
