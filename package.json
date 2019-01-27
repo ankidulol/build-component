@@ -1,0 +1,17 @@
+{
+	"name": "build-component",
+	"version": "1.0.0",
+	"description": "Command-line tool for creating react-native components",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Joonas Järvinen",
+	"license": "MIT",
+	"bin": {
+		"build-component": "./index.js"
+	},
+	"dependencies": {
+		"commander": "^2.19.0"
+	}
+}
