@@ -1,6 +1,5 @@
 module.exports = {
-	classComponent: (componentName, styleImport) => {
-		return `//Components
+	classComponent: (componentName, styleImport) => `//Components
 import React, { Component } from 'react';
 import { View } from 'react-native';
 ${styleImport}
@@ -11,11 +10,9 @@ export default class ${componentName} extends Component {
 			</View>
 		);
 	}
-}`;
-	},
+}`,
 
-	functionalComponent: (componentName, styleImport) => {
-		return `// Components
+	functionalComponent: (componentName, styleImport) => `// Components
 import React from 'react';
 import { View } from 'react-native';
 ${styleImport}
@@ -25,11 +22,9 @@ const ${componentName} = props => (
 );
 
 export default ${componentName};
-`;
-	},
+`,
 
-	styleTemplate: () => {
-		return `import { StyleSheet } from 'react-native';
+	styleTemplate: () => `import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
 	wrapper: {
@@ -37,12 +32,10 @@ export const styles = StyleSheet.create({
 	}
 });
 
-			`;
-	},
-	styleImport: () => {
-		return `
+`,
+
+	styleImport: () => `
 // Styles
 import { styles } from './styles';
-`;
-	}
+`
 };

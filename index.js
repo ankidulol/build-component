@@ -1,20 +1,30 @@
 #!/usr/bin/env node
+var versionNumber = require('./package.json');
 const fs = require('fs');
 var program = require('commander');
 var template = require('./templates');
 
 program
-	.version('0.1.0')
+	.version(versionNumber.version)
 	.option('-n, --componentname', 'react component name')
 	.option('-f, --functionalcomponent', 'creates functional component')
 	.option('-s, --style', 'creates seperate style file')
+	.option('-d, --deletefolder', 'Does not create folder')
 	.action(componentName => {
 		if (program.componentname && typeof componentName === 'string') {
 			if (!fs.existsSync(componentName)) {
-				fs.mkdirSync(componentName);
+
+				var path;
+
+				if(!program.deletefolder) {
+					fs.mkdirSync(componentName);
+					path = './' + componentName + '/' + componentName + '.js';					
+				} else {
+					path = './' + componentName + '.js'						
+				}
 
 				fs.writeFile(
-					'./' + componentName + '/' + componentName + '.js',
+					path,
 					!program.functionalcomponent
 						? template.classComponent(
 								componentName,
@@ -31,8 +41,16 @@ program
 				);
 
 				if (program.style) {
+					var stylePath;
+
+					if(!program.deletefolder) {
+						stylePath = './' + componentName + '/styles.js';					
+					} else {
+						stylePath = './styles.js';						
+					}
+
 					fs.writeFile(
-						'./' + componentName + '/styles.js',
+						stylePath,
 						template.styleTemplate(),
 						err => {
 							if (err) return console.log(err);

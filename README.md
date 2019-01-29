@@ -20,5 +20,8 @@ Create component by typing
 
 `-s` Creates seperate styles file
 
+`-d` Does not create folder
+
 # License
+
 MIT

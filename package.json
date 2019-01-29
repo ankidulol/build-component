@@ -1,15 +1,19 @@
 {
 	"name": "build-component",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "Command-line tool for creating react-native components",
 	"main": "index.js",
+	"keywords": [
+		"React Native",
+		"cli"
+	],
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jrvq/build-component.git"
-	},	
+	},
 	"author": "Joonas Järvinen",
 	"license": "MIT",
 	"bin": {
