@@ -1,8 +1,8 @@
 ## build-component
 
-Simple command-line tool for creating [React](https://reactjs.org/) component boilerplates
+Simple command-line tool for creating [React Native](https://facebook.github.io/react-native/) component boilerplates
 
-![Alt Text](https://media.giphy.com/media/eeFdkV8V3jYTkyCSqq/giphy.gif)
+![Alt Text](https://media.giphy.com/media/ibYEdqBuXfxCOwCbNi/giphy.gif)
 
 ## Installation
 
@@ -12,17 +12,17 @@ Simple command-line tool for creating [React](https://reactjs.org/) component bo
 
 Create component by typing
 
-`$ build-component ComponentName`
+`$ build-component MyComponent`
 
 Create component with seperate styles file
 
-`$ build-component ComponentName ComponentStyle.css`
+`$ build-component MyComponent MyStyles.css`
 
 ## Flags
 
 `-f` Creates functional component instead
 
-`-d` Does NOT wrap files inside a folder
+`-d` Does NOT wrap files to a folder
 
 # License
 
