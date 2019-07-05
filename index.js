@@ -3,77 +3,77 @@ var versionNumber = require('./package.json');
 const fs = require('fs');
 var program = require('commander');
 var template = require('./templates');
+var colors = require('./constants');
 
 program
-	.version(versionNumber.version)
-	.option('-n, --componentname', 'react component name')
-	.option('-f, --functionalcomponent', 'creates functional component')
-	.option('-s, --style', 'creates seperate style file')
-	.option('-d, --deletefolder', 'Does not create folder')
-	.action(componentName => {
-		if (program.componentname && typeof componentName === 'string') {
-			if (!fs.existsSync(componentName)) {
+  .version(versionNumber.version)
+  .option('-f, --functionalcomponent', 'creates functional component')
+  .option('-d, --deletefolder', 'does NOT wrap files to a folder')
+  .parse(process.argv);
 
-				var path;
+function ifStyleNameExistsAdd(styleImport) {
+  return styleImport ? template.styleImport(styleImport) : '';
+}
 
-				if(!program.deletefolder) {
-					fs.mkdirSync(componentName);
-					path = './' + componentName + '/' + componentName + '.js';					
-				} else {
-					path = './' + componentName + '.js'						
-				}
+function ifDFlagTrueWrapFilesToFolder(componentName) {
+  if (program.deletefolder) {
+    return './' + componentName + '.js';
+  } else {
+    fs.mkdirSync(componentName);
+    return './' + componentName + '/' + componentName + '.js';
+  }
+}
 
-				fs.writeFile(
-					path,
-					!program.functionalcomponent
-						? template.classComponent(
-								componentName,
-								program.style ? template.styleImport() : ''
-						  )
-						: template.functionalComponent(
-								componentName,
-								program.style ? template.styleImport() : ''
-						  ),
-					err => {
-						if (err) return console.log(err);
-						console.log('\x1b[32m%s\x1b[0m', 'Component created!');
-					}
-				);
+function ifDFlagTruePutStyleToFolder(folderName, fileName) {
+  if (program.deletefolder) {
+    return './' + fileName;
+  } else {
+    return './' + folderName + '/' + fileName;
+  }
+}
 
-				if (program.style) {
-					var stylePath;
+if (program.args[0]) {
+  var componentName = program.args[0];
+  var styleName = program.args[1] || null;
 
-					if(!program.deletefolder) {
-						stylePath = './' + componentName + '/styles.js';					
-					} else {
-						stylePath = './styles.js';						
-					}
+  if (!fs.existsSync(componentName)) {
+    var path = ifDFlagTrueWrapFilesToFolder(componentName);
 
-					fs.writeFile(
-						stylePath,
-						template.styleTemplate(),
-						err => {
-							if (err) return console.log(err);
-						}
-					);
-				}
-			} else {
-				console.log(
-					'A file or folder with the name ' +
-						componentName +
-						' already exists. Try different name'
-				);
-			}
-		} else {
-			console.log(
-				'\x1b[33m%s\x1b[0m\x1b[32m%s\x1b[0m',
-				'component name required\n',
-				'try: create-component -n MyComponent'
-			);
-		}
-	})
-	.parse(process.argv);
+    fs.writeFile(
+      path,
+      program.functionalcomponent
+        ? template.functionalComponent(
+            componentName,
+            ifStyleNameExistsAdd(styleName)
+          )
+        : template.classComponent(
+            componentName,
+            ifStyleNameExistsAdd(styleName)
+          ),
+      err => {
+        if (err) return console.log(err);
+        console.log(colors.green, 'Component created!');
+      }
+    );
 
+    if (styleName) {
+      var stylePath = ifDFlagTruePutStyleToFolder(componentName, styleName);
 
-
-
+      fs.writeFile(stylePath, template.styleTemplate(styleName), err => {
+        if (err) return console.log(err);
+      });
+    }
+  } else {
+    console.log(
+      'A file or folder with the name ' +
+        componentName +
+        ' already exists. Try different name'
+    );
+  }
+} else {
+  console.log(
+    colors.yellow + colors.green,
+    'component name required\n',
+    'try: create-component MyComponent'
+  );
+}

@@ -1,6 +1,6 @@
 {
 	"name": "build-component",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "Command-line tool for creating react-native components",
 	"main": "index.js",
 	"keywords": [

@@ -1,41 +1,55 @@
 module.exports = {
-	classComponent: (componentName, styleImport) => `//Components
+  classComponent: (componentName, styleImport) => `//Components
 import React, { Component } from 'react';
-import { View } from 'react-native';
 ${styleImport}
 export default class ${componentName} extends Component {
-	render() {
-		return (
-			<View>
-			</View>
-		);
-	}
+    render() {
+        return (
+
+        );
+    }
 }`,
 
-	functionalComponent: (componentName, styleImport) => `// Components
+  functionalComponent: (componentName, styleImport) => `// Components
 import React from 'react';
-import { View } from 'react-native';
 ${styleImport}
-const ${componentName} = props => (
-	<View>
-	</View>
-);
+function ${componentName} () { 
+    return (
+
+    );
+}
 
 export default ${componentName};
 `,
 
-	styleTemplate: () => `import { StyleSheet } from 'react-native';
+  styleTemplate: styleName => {
+    if (/.css/.test(styleName))
+      return `.wrapper {
+
+}`;
+    else if (/.js/.test(styleName))
+      return `import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
 	wrapper: {
-		//...
+
 	}
 });
 
-`,
+`;
+    else return ' ';
+  },
 
-	styleImport: () => `
+  styleImport: styleName => {
+    if (/.js/.test(styleName))
+      return `
 // Styles
-import { styles } from './styles';
-`
+import { styles } from './${styleName}';
+`;
+    else
+      return `
+// Styles
+import './${styleName}
+`;
+  }
 };
