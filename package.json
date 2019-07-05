@@ -1,11 +1,13 @@
 {
 	"name": "build-component",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "Command-line tool for creating react-native components",
 	"main": "index.js",
-	"keywords": [
-		"React Native",
-		"cli"
+        "keywords": [
+            "React",
+	    "React Native",
+	    "component",
+	    "cli"
 	],
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
