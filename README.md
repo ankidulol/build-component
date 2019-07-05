@@ -1,6 +1,6 @@
 ## build-component
 
-Simple command-line tool for creating [React Native](https://facebook.github.io/react-native/) component boilerplates
+Simple command-line tool for creating [React](https://reactjs.org/) component boilerplates
 
 ![Alt Text](https://media.giphy.com/media/ibYEdqBuXfxCOwCbNi/giphy.gif)
 
