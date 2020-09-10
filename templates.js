@@ -49,7 +49,7 @@ import { styles } from './${styleName}';
     else
       return `
 // Styles
-import './${styleName}'
+import './${styleName}';
 `;
   }
 };

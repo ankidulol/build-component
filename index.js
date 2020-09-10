@@ -7,73 +7,67 @@ var colors = require('./constants');
 
 program
   .version(versionNumber.version)
-  .option('-f, --functionalcomponent', 'creates functional component')
-  .option('-d, --deletefolder', 'does NOT wrap files to a folder')
+  .option('-f, --functionalcomponent', 'Creates functional component')
+  .option('-d, --directorywrap', 'Wraps files in a folder')
   .parse(process.argv);
 
-function ifStyleNameExistsAdd(styleImport) {
-  return styleImport ? template.styleImport(styleImport) : '';
+function styleExists(styleFile) {
+  return styleFile ? template.styleImport(styleFile) : '';
 }
 
-function ifDFlagTrueWrapFilesToFolder(componentName) {
-  if (program.deletefolder) {
-    return './' + componentName + '.js';
-  } else {
+function wrapFilesInFolder(componentName) {
+  if (program.directorywrap) {
     fs.mkdirSync(componentName);
     return './' + componentName + '/' + componentName + '.js';
+  } else {
+    return './' + componentName + '.js';
   }
 }
 
-function ifDFlagTruePutStyleToFolder(folderName, fileName) {
-  if (program.deletefolder) {
-    return './' + fileName;
-  } else {
+function wrapStyleInFolder(folderName, fileName) {
+  if (program.directorywrap) {
     return './' + folderName + '/' + fileName;
+  } else {
+    return './' + fileName;
   }
 }
 
 if (program.args[0]) {
   var componentName = program.args[0];
-  var styleName = program.args[1] || null;
+  var styleFile = program.args[1] || null;
 
-  if (!fs.existsSync(componentName)) {
-    var path = ifDFlagTrueWrapFilesToFolder(componentName);
+  if (fs.existsSync(componentName)) {
+    console.log(
+      'A file or folder with the name ' +
+        componentName +
+        ' already exists. Try different name'
+    );
+  } else {
+    var path = wrapFilesInFolder(componentName);
 
     fs.writeFile(
       path,
       program.functionalcomponent
-        ? template.functionalComponent(
-            componentName,
-            ifStyleNameExistsAdd(styleName)
-          )
-        : template.classComponent(
-            componentName,
-            ifStyleNameExistsAdd(styleName)
-          ),
+        ? template.functionalComponent(componentName, styleExists(styleFile))
+        : template.classComponent(componentName, styleExists(styleFile)),
       err => {
         if (err) return console.log(err);
         console.log(colors.green, 'Component created!');
       }
     );
 
-    if (styleName) {
-      var stylePath = ifDFlagTruePutStyleToFolder(componentName, styleName);
+    if (styleFile) {
+      var stylePath = wrapStyleInFolder(componentName, styleFile);
 
-      fs.writeFile(stylePath, template.styleTemplate(styleName), err => {
+      fs.writeFile(stylePath, template.styleTemplate(styleFile), err => {
         if (err) return console.log(err);
       });
     }
-  } else {
-    console.log(
-      'A file or folder with the name ' +
-        componentName +
-        ' already exists. Try different name'
-    );
   }
 } else {
   console.log(
     colors.yellow + colors.green,
     'component name required\n',
-    'try: create-component MyComponent'
+    'try: build-component MyComponent'
   );
 }

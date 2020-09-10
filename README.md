@@ -16,13 +16,13 @@ Create component by typing
 
 Create component with seperate styles file
 
-`$ build-component MyComponent MyStyles.css`
+`$ build-component MyComponent styles.js`
 
 ## Flags
 
 `-f` Creates functional component instead
 
-`-d` Does NOT wrap files to a folder
+`-d` Wraps files in a folder
 
 # License
 
