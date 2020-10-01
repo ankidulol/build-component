@@ -1,7 +1,7 @@
 module.exports = {
-  classComponent: (componentName, styleImport) => `//Components
+  classComponent: (componentName, importStyle) => `//Components
 import React, { Component } from 'react';
-${styleImport}
+${importStyle}
 export default class ${componentName} extends Component {
     render() {
         return (
@@ -10,9 +10,9 @@ export default class ${componentName} extends Component {
     }
 }`,
 
-  functionalComponent: (componentName, styleImport) => `// Components
+  functionalComponent: (componentName, importStyle) => `// Components
 import React from 'react';
-${styleImport}
+${importStyle}
 function ${componentName} () { 
     return (
 
@@ -22,34 +22,72 @@ function ${componentName} () {
 export default ${componentName};
 `,
 
-  styleTemplate: styleName => {
-    if (/.css/.test(styleName))
-      return `.wrapper {
+  styleTemplate: (styleName, program) => {
+    const cssTemplate = `.wrapper {
 
 }`;
-    else if (/.js/.test(styleName))
-      return `import { StyleSheet } from 'react-native';
+    const styleSheetTemplate = `import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-	wrapper: {
+    wrapper: {
 
-	}
+    }
 });
 
 `;
-    else return ' ';
+
+    const styledComponentTemplate = `import styled from 'styled-components';
+
+const Wrapper = styled.div\`\`;
+
+export { Wrapper };
+`;
+
+    if (/.css/.test(styleName)) {
+      return cssTemplate;
+    } else if (/.js/.test(styleName)) {
+      if (program.styledComponentTemplate) {
+        return styledComponentTemplate;
+      } else if (program.reactNativeStylesheetTemplate) {
+        return styleSheetTemplate;
+      } else {
+        return ' ';
+      }
+    } else {
+      return ' ';
+    }
   },
 
-  styleImport: styleName => {
-    if (/.js/.test(styleName))
-      return `
+  importStyle: (styleName, program) => {
+    const styleDefaultImport = `
+// Styles
+import { } from './${styleName}';
+`;
+    const styleSheetImport = `
 // Styles
 import { styles } from './${styleName}';
 `;
-    else
-      return `
+
+    const styledComponentImport = `
+// Styles
+import { Wrapper } from './${styleName}';
+`;
+
+    const cssImport = `
 // Styles
 import './${styleName}';
 `;
+
+    if (/.js/.test(styleName)) {
+      if (program.styledComponentTemplate) {
+        return styledComponentImport;
+      } else if (program.reactNativeStylesheetTemplate) {
+        return styleSheetImport;
+      } else {
+        return styleDefaultImport;
+      }
+    } else {
+      return cssImport;
+    }
   }
 };

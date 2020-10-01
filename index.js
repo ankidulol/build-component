@@ -7,16 +7,24 @@ var colors = require('./constants');
 
 program
   .version(versionNumber.version)
-  .option('-f, --functionalcomponent', 'Creates functional component')
-  .option('-d, --directorywrap', 'Wraps files in a folder')
+  .option('-c, --class-component', 'Creates class component')
+  .option('-d, --directory-wrap', 'Wraps files in a folder')
+  .option(
+    '-s, --styled-component-template',
+    'Creates styled-component template'
+  )
+  .option(
+    '-n, --react-native-stylesheet-template',
+    'Creates StyleSheet template'
+  )
   .parse(process.argv);
 
 function styleExists(styleFile) {
-  return styleFile ? template.styleImport(styleFile) : '';
+  return styleFile ? template.importStyle(styleFile, program) : '';
 }
 
 function wrapFilesInFolder(componentName) {
-  if (program.directorywrap) {
+  if (program.directoryWrap) {
     fs.mkdirSync(componentName);
     return './' + componentName + '/' + componentName + '.js';
   } else {
@@ -25,7 +33,7 @@ function wrapFilesInFolder(componentName) {
 }
 
 function wrapStyleInFolder(folderName, fileName) {
-  if (program.directorywrap) {
+  if (program.directoryWrap) {
     return './' + folderName + '/' + fileName;
   } else {
     return './' + fileName;
@@ -44,12 +52,11 @@ if (program.args[0]) {
     );
   } else {
     var path = wrapFilesInFolder(componentName);
-
     fs.writeFile(
       path,
-      program.functionalcomponent
-        ? template.functionalComponent(componentName, styleExists(styleFile))
-        : template.classComponent(componentName, styleExists(styleFile)),
+      program.classComponent
+        ? template.classComponent(componentName, styleExists(styleFile))
+        : template.functionalComponent(componentName, styleExists(styleFile)),
       err => {
         if (err) return console.log(err);
         console.log(colors.green, 'Component created!');
@@ -59,9 +66,13 @@ if (program.args[0]) {
     if (styleFile) {
       var stylePath = wrapStyleInFolder(componentName, styleFile);
 
-      fs.writeFile(stylePath, template.styleTemplate(styleFile), err => {
-        if (err) return console.log(err);
-      });
+      fs.writeFile(
+        stylePath,
+        template.styleTemplate(styleFile, program),
+        err => {
+          if (err) return console.log(err);
+        }
+      );
     }
   }
 } else {

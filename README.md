@@ -20,9 +20,13 @@ Create component with seperate styles file
 
 ## Flags
 
-`-f` Creates functional component instead
+`-c` Creates class component
 
-`-d` Wraps files in a folder
+`-d` Wrap files in a folder
+
+`-s` Creates styled-component template
+
+`-n` Creates StyleSheet template
 
 # License
 
